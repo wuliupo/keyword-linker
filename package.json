@@ -1,0 +1,24 @@
+{
+  "name": "keyword-linker",
+  "version": "1.0.0",
+  "description": "Add hyperlinks for keywords",
+  "main": "keyword-linker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wuliupo/keyword-linker.git"
+  },
+  "keywords": [
+    "keyword",
+    "hyperlink",
+    "replacement"
+  ],
+  "author": "Liupo WU",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wuliupo/keyword-linker/issues"
+  },
+  "homepage": "https://github.com/wuliupo/keyword-linker#readme"
+}
