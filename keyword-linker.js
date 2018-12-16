@@ -12,8 +12,30 @@
 }(typeof window !== 'undefined' ? window : this, function(win, noGlobal) {
     var doc = win.document;
 
-    var KeywordLinker = function(keywords, replacement, config) {
-        this.replacement = replacement;
+    var KeywordLinker = function(keywords, config) {
+        config = config || {};
+        var replacement = config.replacement;
+        if (!replacement || !keywords || !keywords.length) {
+            throw new Error('KeywordLinker requires parameters: keywords(array), replacement(string or function)');
+        }
+        if (typeof replacement === 'string') {
+            var placeholder = config.placeholder;
+            if (placeholder && (typeof placeholder === 'string')) {
+                placeholder = new RegExp(placeholder, 'g');
+            }
+            if (!placeholder || !(placeholder instanceof RegExp)) {
+                throw new Error('KeywordLinker string replacement parameter must have a peer placeholder(string or regexp)');
+            }
+            this.replacement = function(s0) {
+                return replacement.replace(placeholder, function() {
+                    return s0;
+                });
+            }
+        } else if (typeof that.replacement === 'function') {
+            this.replacement = replacement;
+        } else {
+            throw new Error('KeywordLinker replacement parameter must be string or function');
+        }
         this.config = Object.assign({
             ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO']
         }, config);
@@ -105,7 +127,7 @@
                 if (item.max < 1) {
                     isBreak = true;
                 }
-                return that.replacement.replace(/KEYWORD/g, s0);
+                return that.replacement(s0);
             });
             var lastGt = text.lastIndexOf('>') + 1;
             if (isBreak && lastGt) {

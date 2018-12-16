@@ -88,7 +88,7 @@ new Vue({
         ],
         text: document.getElementById('content').innerHTML,
         content: '',
-        replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>',
+        config: { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD' },
         source: ''
     },
     methods: {
@@ -100,14 +100,14 @@ new Vue({
         },
         linker: function() {
             this.source = '';
-            this.content = new KeywordLinker(this.keywords, this.replacement).addLink2String(this.text);
+            this.content = new KeywordLinker(this.keywords, this.config).addLink2String(this.text);
         },
         toggle: function() {
             this.source = this.source ? '' : this.content || this.text
         }
     },
     mounted: function() {
-        new KeywordLinker(this.keywords, this.replacement).addLink2Dom(this.$refs.content);
+        new KeywordLinker(this.keywords, this.config).addLink2Dom(this.$refs.content);
     }
 })
 </script>
