@@ -15,6 +15,7 @@ img { max-width: 100%; max-height: 100%; }
 .right-btn { float: right; margin: -52px 12px 0 0; }
 .content { padding: 4px 10px; line-height: 22px; font-size: 12px; border: 1px solid #ebebeb; border-radius: 3px; background-color: #f6f6f1; }
 .hot-keyword { background-color: #FD0; }
+.el-table + .el-table { margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -44,6 +45,18 @@ img { max-width: 100%; max-height: 100%; }
             </td>
             <td class="cell">
                 <button type="button" class="el-button el-icon-remove-outline el-button--default el-button--small" @click="remove(index)">删除</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="el-table el-table--fit el-table--striped el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+    <tbody class="el-table__body-wrapper is-scrolling-none">
+        <tr class="el-table__row">
+            <td class="cell">
+                替换文本：<div class="el-input el-input--small"><input v-model="config.replacement" placeholder="替换文本" type="text" autocomplete="off" class="el-input__inner"></div>
+            </td>
+            <td class="cell">
+                占位符：<div class="el-input el-input--small"><input v-model="config.placeholder" placeholder="最多替换次数" type="text" autocomplete="off" class="el-input__inner"></div>
             </td>
         </tr>
     </tbody>
