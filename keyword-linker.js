@@ -73,7 +73,7 @@
             var rst = [];
             for (var i = 0; i < this.keywordArr.length; i++) {
                 var item = this.keywordArr[i];
-                if (item.max > 0 && rst.indexOf(item.text) < 0) {
+                if (item.max > 0 && item.text && rst.indexOf(item.text) < 0) {
                     rst.push(item.text);
                 }
             }
