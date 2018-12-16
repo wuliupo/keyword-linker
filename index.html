@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>关键词加超链接</title>
+<link rel="stylesheet" href="http://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<style>
+* { box-sizing: border-box; }
+img { max-width: 100%; max-height: 100%; }
+.container { margin: 0 auto 50px; max-width: 1000px; }
+.el-button { padding: 3px 12px; }
+.el-button:before { margin-right: 5px; font-size: 24px; vertical-align: middle; }
+.right-btn { float: right; margin: -52px 12px 0 0; }
+.content { padding: 4px 10px; line-height: 22px; font-size: 12px; border: 1px solid #ebebeb; border-radius: 3px; background-color: #f6f6f1; }
+</style>
+</head>
+<body>
+<div id="app" class="container">
+<h1>关键词加超链接</h1>
+<h3>关键词</h3>
+<button class="el-button el-button--default el-button--small right-btn el-icon-circle-plus-outline" @click="add">添加</button>
+<table class="el-table el-table--fit el-table--striped el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+    <thead class="el-table__header-wrapper">
+        <tr class="">
+            <th class="cell is-leaf">关键词</th>
+            <th class="cell is-leaf">最多替换</th>
+            <th class="cell is-leaf">优先级</th>
+            <th class="cell is-leaf" width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody class="el-table__body-wrapper is-scrolling-none">
+        <tr class="el-table__row" v-for="(item, index) in keywords">
+            <td class="cell">
+                <div class="el-input el-input--small"><input v-model="item.text" placeholder="关键词" type="text" autocomplete="off" class="el-input__inner"></div>
+            </td>
+            <td class="cell">
+                <div class="el-input el-input--small"><input v-model="item.max" placeholder="最多替换次数" type="text" autocomplete="off" class="el-input__inner"></div>
+            </td>
+            <td class="cell">
+                <div class="el-input el-input--small"><input v-model="item.priority" placeholder="优先级" type="text" autocomplete="off" class="el-input__inner"></div>
+            </td>
+            <td class="cell">
+                <button type="button" class="el-button el-icon-remove-outline el-button--default el-button--small" @click="remove(index)">删除</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>正文</h3>
+<span class="right-btn">
+    <button class="el-button el-button--primary el-button--small el-icon-edit" @click="linker">加链接</button>
+    <button class="el-button el-button--default el-button--small el-icon-refresh" @click="source = content = ''">还原</button>
+    <button class="el-button el-button--default el-button--small el-icon-view" @click="toggle">源码</button>
+</span>
+<div class="content" v-if="source" v-text="source"></div>
+<div v-else id="content" ref="content" class="content" v-html="content || text">
+    <p data-tips="盘古大帝">宇宙混沌，鸿蒙初开，<a title="盘古大帝" href="#盘古大帝">盘古大帝劈开了天地</a>。</p>
+    <p>那时候，神族、人族、妖族混居于天地之间。天与地的距离并非遥不可及，人居于陆地，神居于神山，人可以通过天梯见神。</p>
+    <p>盘古大帝有三位情如兄妹的下属，神力最高的是一位女子，因年代过于久远，名字已不可考，只知道她后来建立了华胥国1，后世尊称她为华胥氏。另外两位是男子：神农氏，驻守中原，守四方安宁；高辛氏，驻守东方，守护日出之地汤谷2和万水之眼归墟3。</p>
+    <p>盘古大帝仙逝后，天下战火频起，华胥氏厌倦了无休无止的战争，避世远走，创建了美丽祥和的华胥国。可她之所以被后世铭记，并不是因为华胥国，而是因为她的儿子伏羲、女儿女娲。</p>
+    <p>伏羲、女娲恩威并重，令天下英雄敬服，制止了兵戈之争。伤痕累累的大荒迎来太平，渐渐恢复了生机。</p>
+    <p>伏羲、女娲被尊为伏羲大帝、女娲大帝。</p>
+    <p>伏羲大帝仙逝后，女娲大帝悲痛不已，避居华胥国，从此再没有人见过她，生死成谜，伏羲女娲一族日渐没落。</p>
+    <p>大荒的西北，一个小神族——轩辕族，在他们年轻首领的带领下正在慢慢崛起。几千年之后，轩辕族已经可以和古老的神农、高辛两族抗衡。</p>
+    <p>中原的神农、东南的高辛、西北的轩辕，三大神族，三分天下。</p>
+    <p>神农炎帝遍尝百草，以身试药，为世人解除疾苦，受万民爱戴，被天下人尊为医祖。因为神农炎帝，大荒形成了三足鼎立的局面。</p>
+    <p>神农炎帝的逝世打破了三足鼎立的局面，轩辕黄帝雄才伟略，经过和神农族的激烈斗争，统一了中原。</p>
+    <p>统一并不是斗争的结束，而是另一种斗争的开始。</p>
+    <p>神农、轩辕两个部族经过痛苦的斗争，逐渐能和平相处，可一切的矛盾犹如休眠的火山，随时会爆发。</p>
+    <p class="盘古">盘古大帝、盘古大帝、盘古、盘古大帝、盘古、盘古大帝、盘古</p>
+    <p><img src="http://img3.doubanio.com/view/subject/l/public/s24931256.jpg" alt="长相思、三皇五帝事情的故事" title="盘古大帝"></p>
+</div>
+</div>
+<script src="http://unpkg.com/vue@2.5.17/dist/vue.js"></script>
+<script src="./keyword-linker.js"></script>
+<script>
+Vue.config.performance = Vue.config.debug = Vue.config.devtools = Vue.config.productionTip = true;
+Vue.config.silent = false;
+new Vue({
+    el: '#app',
+    data: {
+        keywords: [
+            { text: '盘古大帝', priority: 10, max: 3 },
+            { text: '盘古', priority: 1, max: 3 }
+        ],
+        text: document.getElementById('content').innerHTML,
+        content: '',
+        replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>',
+        source: ''
+    },
+    methods: {
+        add: function() {
+            this.keywords.push({ text: '', priority: 1, max: 3 });
+        },
+        remove: function(index) {
+            this.keywords.splice(index, 1);
+        },
+        linker: function() {
+            this.source = '';
+            this.content = new KeywordLinker(this.keywords, this.replacement).addLink2String(this.text);
+        },
+        toggle: function() {
+            this.source = this.source ? '' : this.content || this.text
+        }
+    },
+    mounted: function() {
+        new KeywordLinker(this.keywords, this.replacement).addLink2Dom(this.$refs.content);
+    }
+})
+</script>
+</body>
+</html>
