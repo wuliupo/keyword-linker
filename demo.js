@@ -1,5 +1,12 @@
 var JSDOM = require('jsdom').JSDOM;
 var win = (new JSDOM('<!doctype html><html><body></body></html>')).window;
+
+// use global window
+global.window = win;
+global.document = win.document;
+var KeywordLinker = require('./keyword-linker');
+
+// use parameter window
 var KeywordLinker = require('./keyword-linker')(win);
 
 var keywords = [ { text: '盘古大帝', priority: 10, max: 3 }, { text: '盘古', priority: 1, max: 3 } ];
