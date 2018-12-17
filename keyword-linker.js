@@ -9,7 +9,7 @@
     } else {
         factory(global);
     }
-}(typeof window !== 'undefined' ? window : this, function(win, noGlobal) {
+}(typeof window !== 'undefined' ? window : this, function(win) {
     var doc = win.document;
 
     var KeywordLinker = function(keywords, config) {
@@ -140,4 +140,5 @@
     };
 
     win.KeywordLinker = KeywordLinker;
+    return KeywordLinker;
 }));
