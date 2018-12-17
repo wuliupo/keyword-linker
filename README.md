@@ -15,7 +15,7 @@ Code: <http://github.com/wuliupo/keyword-linker>
 ```js
 // Prepare（准备参数）
 var keywords = [ { text: '盘古大帝', priority: 10, max: 3 }, { text: '盘古', priority: 1, max: 3 } ];
-var config = { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD' };
+var config = { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD', max: 10 };
 var kl = new KeywordLinker(keywords, config);
 
 // Render for a DOM (直接渲染网页内容)
