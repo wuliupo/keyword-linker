@@ -1,6 +1,6 @@
 {
   "name": "keyword-linker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Generate links for documentation from keywords.",
   "main": "keyword-linker.js",
   "scripts": {
@@ -19,8 +19,5 @@
   "bugs": {
     "url": "https://github.com/wuliupo/keyword-linker/issues"
   },
-  "homepage": "https://github.com/wuliupo/keyword-linker#readme",
-  "peerDependencies": {
-    "jsdom": "^13.1.0"
-  }
+  "homepage": "https://github.com/wuliupo/keyword-linker#readme"
 }

@@ -1,17 +1,15 @@
 # Add hyperlinks from keywords (关键词加超链接)
 
-Generate links for documentation from keywords.
-
-Demo: <http://wuliupo.github.io/keyword-linker>
-Code: <http://github.com/wuliupo/keyword-linker>
+Generate links for documentation from keywords. <http://github.com/wuliupo/keyword-linker>
 
 ## Usage（使用方法）
 
 - npm install keyword-linker
 - Browser: ```<script src="./keyword-linker.js"></script>```
-- Node: ```require('keyword-linker')``` ref: [./demo.js](demo.js)
-  - [https://github.com/jsdom/jsdom](jsdom)
-  - [https://github.com/cheeriojs/cheerio](cheerio)
+  - UI demo: <http://wuliupo.github.io/keyword-linker>
+- Node.js: ```require('keyword-linker')```, demo:
+  - [jsdom-demo.js](./node-demo/jsdom-demo.js) (depended on [jsdom](https://github.com/jsdom/jsdom))
+  - [cheerio-demo.js](./node-demo/cheerio-demo.js) (depended on [cheerio](https://github.com/cheeriojs/cheerio))
 - Import: ```import KeywordLinker from './keyword-linker.js'```
 
 ```js

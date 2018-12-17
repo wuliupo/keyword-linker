@@ -1,16 +1,18 @@
 (function(global, factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
-        module.exports = global.document ? factory(global) : function(w) {
-            if (!w.document) {
-                throw new Error('KeywordLinker requires window with document');
+        module.exports = global.document ? factory(global) : function(win) {
+            if (!win || !win.document && !win.load) {
+                console.warn('KeywordLinker requires window with document');
             }
-            return factory(w);
+            return factory(win);
         };
     } else {
         factory(global);
     }
 }(typeof window !== 'undefined' ? window : this, function(win) {
-    var doc = win.document;
+    if (!win || !win.document && !win.load) {
+        throw new Error('KeywordLinker requires window with document, or using cheerio');
+    }
 
     var KeywordLinker = function(keywords, config) {
         config = config || {};
@@ -37,20 +39,29 @@
             throw new Error('KeywordLinker replacement parameter must be string or function');
         }
         this.config = Object.assign({
-            ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO', 'HEAD', 'IFRAME', 'FRAME', 'AREA', 'META', 'EMBED', 'OBJECT', 'APPLET']
+            ignoreTags: ['a', 'img', 'textarea', 'select', 'input', 'button', 'script', 'style', 'link', 'pre', 'video', 'svg', 'canvas', 'audio', 'head', 'iframe', 'frame', 'area', 'meta', 'embed', 'object', 'applet']
         }, config);
         this.keywords = keywords;
     }
 
     KeywordLinker.prototype = {
         addLink2String: function(content) {
-            var dom = doc.createElement('div');
-            dom.innerHTML = content;
-            dom.style.display = 'none';
-            doc.documentElement.appendChild(dom);
-            this.addLink2Dom(dom);
-            content = dom.innerHTML;
-            doc.documentElement.removeChild(dom);
+            var dom, doc = win.document;
+            if (doc) {
+                dom = doc.createElement('div');
+                dom.innerHTML = content;
+                dom.style.display = 'none';
+                doc.documentElement.appendChild(dom);
+                this.addLink2Dom(dom);
+                content = dom.innerHTML;
+                doc.documentElement.removeChild(dom);
+            } else if (win.load) { // cheerio environment
+                dom = win('<div>' + content + '</div>', undefined, undefined, { decodeEntities: false });
+                this.addLink2Dom(dom[0]);
+                content = dom.html();
+            } else {
+                throw new Error('KeywordLinker.addLink2String need a DOM environment');
+            }
             return content;
         },
         addLink2Dom: function(dom) {
@@ -68,7 +79,7 @@
             this.keywordMap = keywordMap;
             this.max = this.config.max || 20;
             this.__initRegExp();
-            return this.__addLink2Dom(dom);
+            this.__addLink2Dom(dom);
         },
         __initRegExp: function() {
             if (this.max <= 0) {
@@ -86,10 +97,7 @@
             this.keywordRegExp = rst && new RegExp(rst, 'g');
         },
         __addLink2Dom: function(dom) {
-            if (!dom || !dom.innerHTML || !this.keywordRegExp) {
-                return dom;
-            }
-            if (!this.keywordRegExp) {
+            if (!dom || !dom.childNodes || !this.keywordRegExp) {
                 return dom;
             }
             var nodes = dom.childNodes;
@@ -98,25 +106,28 @@
                     return dom;
                 }
                 var node = nodes[i];
-                var nodeName = node.nodeName;
-                if (nodeName === '#text') {
-                    var text = node.nodeValue;
+                var nodeName = (node.nodeName || node.tagName || node.name || node.type || '').toLowerCase();
+                if (nodeName === '#text' || nodeName === 'text' || node.nodeType == 3) {
+                    var text = node.nodeValue || '';
                     if (!text.trim()) {
                         continue;
                     }
                     var newText = this.__replaceText(text);
                     if (newText !== text) {
-                        // 文本节点，替换为带超链接的复杂dom
-                        var span = doc.createElement('span');
-                        span.className = 'hot-wrap';
-                        span.innerHTML = newText;
-                        dom.replaceChild(span, node);
+                        if (win.load) { // cheerio environment
+                            win(node).replaceWith('<span class="hot-wrap">' + newText + '</span>');
+                        } else if (win.document) {
+                            // 文本节点，替换为带超链接的复杂dom
+                            var span = win.document.createElement('span');
+                            span.className = 'hot-wrap';
+                            span.innerHTML = newText;
+                            dom.replaceChild(span, node);
+                        }
                     }
-                } else if (this.config.ignoreTags.indexOf(nodeName) < 0 && nodeName.indexOf('#') !== 0) {
+                } else if (nodeName && this.config.ignoreTags.indexOf(nodeName) < 0 && nodeName.indexOf('#') !== 0) {
                     this.__addLink2Dom(node);
                 }
             }
-            return dom;
         },
         __replaceText: function(text) {
             if (!this.keywordRegExp || !text || !text.trim()) {
