@@ -10,6 +10,8 @@ Code: <http://github.com/wuliupo/keyword-linker>
 - npm install keyword-linker
 - Browser: ```<script src="./keyword-linker.js"></script>```
 - Node: ```require('keyword-linker')``` ref: [./demo.js](demo.js)
+  - [https://github.com/jsdom/jsdom](jsdom)
+  - [https://github.com/cheeriojs/cheerio](cheerio)
 - Import: ```import KeywordLinker from './keyword-linker.js'```
 
 ```js
