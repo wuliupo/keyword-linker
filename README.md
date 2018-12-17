@@ -1,5 +1,7 @@
 # Add hyperlinks from keywords (关键词加超链接)
 
+Generate links for documentation from keywords.
+
 Demo: <http://wuliupo.github.io/keyword-linker>
 Code: <http://github.com/wuliupo/keyword-linker>
 
