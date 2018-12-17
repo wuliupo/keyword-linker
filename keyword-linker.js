@@ -129,9 +129,7 @@
                 if (isBreak) {
                     return s0;
                 }
-                that.max--;
-                item.max--;
-                if (item.max < 1 || that.max < 1) {
+                if (--that.max < 1 || --item.max < 1) {
                     isBreak = true;
                 }
                 return that.replacement(s0);
