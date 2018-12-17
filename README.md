@@ -7,9 +7,9 @@ Generate links for documentation from given keywords. <http://github.com/wuliupo
 - ```npm install keyword-linker```
 - Browser: ```<script src="./keyword-linker.js"></script>```
   - UI demo: <http://wuliupo.github.io/keyword-linker>
-- Node.js: ```require('keyword-linker')```, demo:
-  - [jsdom-demo.js](./node-demo/jsdom-demo.js) (depended on [jsdom](https://github.com/jsdom/jsdom))
-  - [cheerio-demo.js](./node-demo/cheerio-demo.js) (depended on [cheerio](https://github.com/cheeriojs/cheerio))
+- Node.js: ```require('keyword-linker')```
+  - [jsdom-demo.js](./node-demo/jsdom-demo.js) (depends on [jsdom](https://github.com/jsdom/jsdom))
+  - [cheerio-demo.js](./node-demo/cheerio-demo.js) (depends on [cheerio](https://github.com/cheeriojs/cheerio))
 - Import: ```import KeywordLinker from './keyword-linker.js'```
 
 ```js
