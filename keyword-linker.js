@@ -37,7 +37,7 @@
             throw new Error('KeywordLinker replacement parameter must be string or function');
         }
         this.config = Object.assign({
-            ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO', 'HEAD']
+            ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO', 'HEAD', 'IFRAME', 'FRAME', 'AREA', 'META', 'EMBED', 'OBJECT', 'APPLET']
         }, config);
         this.keywords = keywords;
     }
