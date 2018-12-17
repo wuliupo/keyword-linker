@@ -10,6 +10,7 @@
 * { box-sizing: border-box; }
 .container { margin: 0 auto 50px; max-width: 1000px; }
 .el-button { padding: 3px 12px; }
+a.el-button { text-decoration: none; }
 .el-button:before { margin-right: 5px; font-size: 24px; vertical-align: middle; }
 .right-btn { float: right; margin: -52px 12px 0 0; }
 .content { padding: 4px 10px; line-height: 22px; font-size: 12px; border: 1px solid #ebebeb; border-radius: 3px; background-color: #f6f6f1; }
@@ -22,10 +23,10 @@ img { display: block; margin: 10px auto; width: 300px; height: 200px; background
 <div id="app" class="container">
 <h1>关键词加超链接</h1>
 <h2>Add hyperlinks from keywords</h2>
-<a href="http://github.com/wuliupo/keyword-linker" class="el-button el-button--default el-button--small right-btn el-icon-circle-plus-outline">Github</a>
+<a href="http://github.com/wuliupo/keyword-linker" class="el-button el-button--default el-button--small right-btn el-icon-star-off">Github</a>
 <h3>关键词</h3>
 <button class="el-button el-button--default el-button--small right-btn el-icon-circle-plus-outline" @click="add">添加</button>
-<table class="el-table el-table--fit el-table--striped el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+<table class="el-table el-table--border el-table--small" cellspacing="0" cellpadding="0" border="0">
     <thead class="el-table__header-wrapper">
         <tr class="">
             <th class="cell is-leaf">关键词</th>
@@ -51,14 +52,17 @@ img { display: block; margin: 10px auto; width: 300px; height: 200px; background
         </tr>
     </tbody>
 </table>
-<table class="el-table el-table--fit el-table--striped el-table--border el-table--enable-row-hover el-table--enable-row-transition el-table--small" cellspacing="0" cellpadding="0" border="0" class="el-table__body">
+<table class="el-table el-table--border el-table--small" cellspacing="0" cellpadding="0" border="0">
     <tbody class="el-table__body-wrapper is-scrolling-none">
         <tr class="el-table__row">
             <td class="cell">
                 替换文本：<div class="el-input el-input--small"><input v-model="config.replacement" placeholder="替换文本" type="text" autocomplete="off" class="el-input__inner"></div>
             </td>
             <td class="cell">
-                占位符：<div class="el-input el-input--small"><input v-model="config.placeholder" placeholder="最多替换次数" type="text" autocomplete="off" class="el-input__inner"></div>
+                占位符：<div class="el-input el-input--small"><input v-model="config.placeholder" placeholder="替换占位符" type="text" autocomplete="off" class="el-input__inner"></div>
+            </td>
+            <td class="cell">
+                最多次数：<div class="el-input el-input--small"><input v-model="config.max" placeholder="最多替换次数" type="text" autocomplete="off" class="el-input__inner"></div>
             </td>
         </tr>
     </tbody>
@@ -104,7 +108,7 @@ new Vue({
         ],
         text: document.getElementById('content').innerHTML,
         content: '',
-        config: { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD' },
+        config: { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD', max: 10 },
         source: ''
     },
     methods: {

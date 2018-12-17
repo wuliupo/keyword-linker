@@ -66,10 +66,15 @@
             });
             this.keywordArr = keywordArr;
             this.keywordMap = keywordMap;
+            this.max = this.config.max || 20;
             this.__initRegExp();
             return this.__addLink2Dom(dom);
         },
         __initRegExp: function() {
+            if (this.max <= 0) {
+                this.keywordRegExp = null;
+                return;
+            }
             var rst = [];
             for (var i = 0; i < this.keywordArr.length; i++) {
                 var item = this.keywordArr[i];
@@ -78,7 +83,7 @@
                 }
             }
             rst = rst.join('|');
-            this.keywordRegExp = rst ? new RegExp(rst, 'g') : null;
+            this.keywordRegExp = rst && new RegExp(rst, 'g');
         },
         __addLink2Dom: function(dom) {
             if (!dom || !dom.innerHTML || !this.keywordRegExp) {
@@ -124,8 +129,9 @@
                 if (isBreak) {
                     return s0;
                 }
+                that.max--;
                 item.max--;
-                if (item.max < 1) {
+                if (item.max < 1 || that.max < 1) {
                     isBreak = true;
                 }
                 return that.replacement(s0);
