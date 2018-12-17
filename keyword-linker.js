@@ -2,7 +2,7 @@
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = global.document ? factory(global, true) : function(w) {
             if (!w.document) {
-                throw new Error('KeywordLinker requires a window with a document');
+                throw new Error('KeywordLinker requires window with document');
             }
             return factory(w);
         };
@@ -37,7 +37,7 @@
             throw new Error('KeywordLinker replacement parameter must be string or function');
         }
         this.config = Object.assign({
-            ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO']
+            ignoreTags: ['A', 'IMG', 'TEXTAREA', 'SELECT', 'INPUT', 'BUTTON', 'SCRIPT', 'STYLE', 'LINK', 'PRE', 'VIDEO', 'SVG', 'CANVAS', 'AUDIO', 'HEAD']
         }, config);
         this.keywords = keywords;
     }
@@ -93,7 +93,8 @@
                     return dom;
                 }
                 var node = nodes[i];
-                if (node.nodeName === '#text') {
+                var nodeName = node.nodeName;
+                if (nodeName === '#text') {
                     var text = node.nodeValue;
                     if (!text.trim()) {
                         continue;
@@ -106,7 +107,7 @@
                         span.innerHTML = newText;
                         dom.replaceChild(span, node);
                     }
-                } else if (this.config.ignoreTags.indexOf(node.nodeName) < 0) {
+                } else if (this.config.ignoreTags.indexOf(nodeName) < 0 && nodeName.indexOf('#') !== 0) {
                     this.__addLink2Dom(node);
                 }
             }
