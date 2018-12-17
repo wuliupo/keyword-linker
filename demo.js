@@ -1,6 +1,6 @@
 var JSDOM = require('jsdom').JSDOM;
-var window = (new JSDOM('<!doctype html><html><body></body></html>')).window;
-var KeywordLinker = require('./keyword-linker')(window);
+var win = (new JSDOM('<!doctype html><html><body></body></html>')).window;
+var KeywordLinker = require('./keyword-linker')(win);
 
 var keywords = [ { text: '盘古大帝', priority: 10, max: 3 }, { text: '盘古', priority: 1, max: 3 } ];
 var config = { replacement: '<a class="hot-keyword" href="#KEYWORD">KEYWORD</a>', placeholder: 'KEYWORD' };
