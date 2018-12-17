@@ -3,6 +3,8 @@ Using jsdom for node DOM
 you can use ```npm install jsdom```
 */
 
+var start = +new Date;
+
 var JSDOM = require('jsdom').JSDOM;
 var win = (new JSDOM('<!doctype html><html><body></body></html>')).window;
 
@@ -21,3 +23,5 @@ var content = '<!--这是一段注释，来自长相思 盘古大帝 盘古--><p
 var kl = new KeywordLinker(keywords, config);
 var newContent = kl.addLink2String(content); // Render for a string (替换字符串)
 console.log(newContent);
+
+console.log(new Date - start);

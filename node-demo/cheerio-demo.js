@@ -3,6 +3,8 @@ Using jsdom for node DOM
 you can use ```npm install cheerio```
 */
 
+var start = +new Date;
+
 const cheerio = require('cheerio')
 
 var keywords = [ { text: '盘古大帝', priority: 10, max: 3 }, { text: '盘古', priority: 1, max: 3 } ];
@@ -14,3 +16,5 @@ var kl = new KeywordLinker(keywords, config);
 
 var newContent = kl.addLink2String(content); // Render for a dom (替换文本节点)
 console.log(newContent);
+
+console.log(new Date - start);

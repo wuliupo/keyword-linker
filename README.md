@@ -4,7 +4,7 @@ Generate links for documentation from given keywords. <http://github.com/wuliupo
 
 ## Usage（使用方法）
 
-- npm install keyword-linker
+- ```npm install keyword-linker```
 - Browser: ```<script src="./keyword-linker.js"></script>```
   - UI demo: <http://wuliupo.github.io/keyword-linker>
 - Node.js: ```require('keyword-linker')```, demo:
