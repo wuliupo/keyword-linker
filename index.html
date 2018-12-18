@@ -13,7 +13,8 @@
 a.el-button { text-decoration: none; }
 .el-button:before { margin-right: 5px; font-size: 24px; vertical-align: middle; }
 .right-btn { float: right; margin: -52px 12px 0 0; }
-.content { padding: 4px 10px; line-height: 22px; font-size: 12px; border: 1px solid #ebebeb; border-radius: 3px; background-color: #f6f6f1; }
+.content { margin: 0; padding: 4px 10px; line-height: 22px; font-size: 12px; border: 1px solid #ebebeb; border-radius: 3px; background-color: #f6f6f1; }
+pre.content { white-space: pre-wrap; }
 .hot-keyword { background-color: #FD0; }
 .el-table + .el-table { margin-top: 20px; }
 img { display: block; margin: 10px auto; width: 300px; height: 160px; background-color: #d4edda; border: 1px solid #c3e6cb; }
@@ -70,10 +71,10 @@ img { display: block; margin: 10px auto; width: 300px; height: 160px; background
 <h3>正文</h3>
 <span class="right-btn">
     <button class="el-button el-button--primary el-button--small el-icon-edit" @click="linker">加链接</button>
-    <button class="el-button el-button--default el-button--small el-icon-refresh" @click="source = content = ''">还原</button>
-    <button class="el-button el-button--default el-button--small el-icon-view" @click="toggle">源码</button>
+    <button class="el-button el-button--default el-button--small el-icon-view" @click="toggleSource">源码</button>
+    <button class="el-button el-button--default el-button--small el-icon-refresh" @click="reset">还原</button>
 </span>
-<div class="content" v-if="source" v-text="source"></div>
+<textarea class="content el-textarea__inner" rows="20" v-if="source" v-model="source"></textarea>
 <div v-else id="content" ref="content" class="content" v-html="content || text">
     <p data-tips="盘古大帝">宇宙混沌，鸿蒙初开，<a title="盘古大帝" href="#盘古大帝">盘古大帝劈开了天地</a>。</p>
     <p>那时候，神族、人族、妖族混居于天地之间。天与地的距离并非遥不可及，人居于陆地，神居于神山，人可以通过天梯见神。</p>
@@ -93,7 +94,7 @@ img { display: block; margin: 10px auto; width: 300px; height: 160px; background
     <p><img src="about:blank" alt="长相思、盘古、三皇五帝时期的故事" title="盘古大帝"></p>
 </div>
 </div>
-<script src="http://unpkg.com/vue@2.5.17/dist/vue.js"></script>
+<script src="http://unpkg.com/vue@2.5.17/dist/vue.min.js"></script>
 <script src="./keyword-linker.js"></script>
 <script>
 Vue.config.performance = Vue.config.debug = Vue.config.devtools = Vue.config.productionTip = true;
@@ -118,11 +119,15 @@ new Vue({
             this.keywords.splice(index, 1);
         },
         linker: function() {
-            this.source = '';
-            this.content = new KeywordLinker(this.keywords, this.config).addLink2String(this.text);
+            this.content = new KeywordLinker(this.keywords, this.config).addLink2String(this.source || this.text);
+            this.source = this.source ? this.content : '';
         },
-        toggle: function() {
-            this.source = this.source ? '' : this.content || this.text
+        toggleSource: function() {
+            this.source = this.source ? '' : (this.content || this.text);
+        },
+        reset: function() {
+            this.content = this.text;
+            this.source = this.source ? this.content : '';
         }
     },
     mounted: function() {
