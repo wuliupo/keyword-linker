@@ -133,23 +133,30 @@
             if (!this.keywordRegExp || !text || !text.trim()) {
                 return text;
             }
-            var isBreak = false; // 如果一个关键词被匹配完了，后面的正则表达式要重新计算，不再进行后续替换
+            var breaker = 0; // 如果一个关键词被匹配完了，后面的正则表达式要重新计算，不再进行后续替换
             var that = this;
             text = text.replace(this.keywordRegExp, function(s0) {
                 var item = that.keywordMap[s0]; // 替换过以后，数量减1
-                if (isBreak) {
+                if (breaker) {
+                    breaker++;
                     return s0;
                 }
                 if (--that.max < 1 || --item.max < 1) {
-                    isBreak = true;
+                    breaker++;
                 }
                 return that.replacement(s0);
             });
-            var lastGt = text.lastIndexOf('>') + 1;
-            if (isBreak && lastGt) {
+            if (breaker) { // 只要有关键词被用完，就得重新计算正则表达式
                 this.__initRegExp();
-                // 中止的部分，前面的直接返回，后面的需要再次替换
-                text = text.substring(0, lastGt) + this.__replaceText(text.substring(lastGt));
+                if (breaker > 1) { // 当前文本后面还有其他匹配的
+                    var lastBracket = text.lastIndexOf('>') + 1;
+                    if (lastBracket) {
+                        if (this.keywordRegExp) {
+                            // 中止的部分，前面的直接返回，后面的需要再次替换
+                            text = text.substring(0, lastBracket) + this.__replaceText(text.substring(lastBracket));
+                        }
+                    }
+                }
             }
             return text;
         }
