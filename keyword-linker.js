@@ -39,7 +39,7 @@
             throw new Error('KeywordLinker replacement parameter must be string or function');
         }
         this.config = Object.assign({
-            ignoreTags: ['a', 'img', 'textarea', 'select', 'input', 'button', 'script', 'style', 'link', 'pre', 'video', 'svg', 'canvas', 'audio', 'head', 'iframe', 'frame', 'area', 'meta', 'embed', 'object', 'applet']
+            ignoreTags: ['a', 'img', 'textarea', 'select', 'input', 'button', 'script', 'style', 'link', 'pre', 'video', 'svg', 'canvas', 'audio', 'head', 'iframe', 'frame', 'area', 'meta', 'embed', 'object', 'applet', 'xml', 'xmp', 'plaintext']
         }, config);
         this.keywords = keywords;
     }
