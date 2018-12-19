@@ -1,18 +1,29 @@
+/*!
+ * Keyword-linker v1.2.0
+ * http://wuliupo.github.io/keyword-linker
+ *
+ * Copyright 2018 Liupo Wu
+ * Released under the MIT license
+ *
+ * Date: 2018-12-18
+ */
 (function(global, factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = global.document ? factory(global) : function(win) {
-            if (!win || !win.document && !win.load) {
-                console.warn('KeywordLinker requires window with document');
-            }
             return factory(win);
         };
     } else {
         factory(global);
     }
 }(typeof window !== 'undefined' ? window : this, function(win) {
-    if (!win || !win.document && !win.load) {
+    if (!win || !win.document && !win.load) { // browser or cheerio
         throw new Error('KeywordLinker requires window with document, or using cheerio');
     }
+
+    var DEFAULT_CONFIG = {
+        max: 20, // global max replacement count
+        ignoreTags: ['a', 'img', 'textarea', 'select', 'input', 'button', 'script', 'style', 'link', 'pre', 'video', 'svg', 'canvas', 'audio', 'head', 'iframe', 'frame', 'area', 'meta', 'embed', 'object', 'applet', 'xml', 'xmp', 'plaintext']
+    };
 
     var KeywordLinker = function(keywords, config) {
         config = config || {};
@@ -38,9 +49,7 @@
         } else {
             throw new Error('KeywordLinker replacement parameter must be string or function');
         }
-        this.config = Object.assign({
-            ignoreTags: ['a', 'img', 'textarea', 'select', 'input', 'button', 'script', 'style', 'link', 'pre', 'video', 'svg', 'canvas', 'audio', 'head', 'iframe', 'frame', 'area', 'meta', 'embed', 'object', 'applet', 'xml', 'xmp', 'plaintext']
-        }, config);
+        this.config = Object.assign(DEFAULT_CONFIG, config);
         this.keywords = keywords;
     }
 
@@ -77,12 +86,12 @@
             });
             this.keywordArr = keywordArr;
             this.keywordMap = keywordMap;
-            this.max = this.config.max || 20;
+            this.max = this.config.max;
             this.__initRegExp();
             this.__addLink2Dom(dom);
         },
         __initRegExp: function() {
-            if (this.max <= 0) {
+            if (this.max <= 0 || !this.keywordArr) {
                 this.keywordRegExp = null;
                 return;
             }
@@ -100,12 +109,11 @@
             if (!dom || !dom.childNodes || !this.keywordRegExp) {
                 return dom;
             }
-            var nodes = dom.childNodes;
-            for (var i = 0; i < nodes.length; i++) {
+            for (var i = 0; i < dom.childNodes.length; i++) {
                 if (!this.keywordRegExp) {
                     return dom;
                 }
-                var node = nodes[i];
+                var node = dom.childNodes[i];
                 var nodeName = (node.nodeName || node.tagName || node.name || node.type || '').toLowerCase();
                 if (nodeName === '#text' || nodeName === 'text' || node.nodeType == 3) {
                     var text = node.nodeValue || '';
